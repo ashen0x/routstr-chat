@@ -18,4 +18,4 @@
 :HL["/routstr-chat/_next/static/css/3b18b6bd92c182a1.css","style"]
 :HL["/routstr-chat/_next/static/css/68d752abbd89709c.css","style"]
 :HL["/routstr-chat/_next/static/css/fd4af84e22b5ad60.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"lab","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"4jXlyWAnr5ngxgPwbhH1V"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"lab","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"mnIutznP020OeS7Niw89S"}
