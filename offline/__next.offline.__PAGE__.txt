@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
 2:I[3523,[],"OutletBoundary"]
 3:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"min-h-dvh grid place-items-center bg-background text-foreground p-8 text-center","children":["$","div",null,{"children":[["$","h1",null,{"className":"text-2xl font-bold mb-3","children":"Offline"}],["$","p",null,{"className":"opacity-80","children":"You’re offline. Some features may be unavailable. We’ll reconnect as soon as you’re back online."}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"1UAHYSAkPZE0vqq2BCZib"}
+0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"min-h-dvh grid place-items-center bg-background text-foreground p-8 text-center","children":["$","div",null,{"children":[["$","h1",null,{"className":"text-2xl font-bold mb-3","children":"Offline"}],["$","p",null,{"className":"opacity-80","children":"You’re offline. Some features may be unavailable. We’ll reconnect as soon as you’re back online."}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"Pa-lxUk1YJmjsyEjuSxaO"}
 4:null
