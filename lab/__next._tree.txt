@@ -17,5 +17,5 @@
 :HL["/routstr-chat/_next/static/css/0e1977b50d8e5701.css","style"]
 :HL["/routstr-chat/_next/static/css/237e426166b536bc.css","style"]
 :HL["/routstr-chat/_next/static/css/68d752abbd89709c.css","style"]
-:HL["/routstr-chat/_next/static/css/33b95efc64564937.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"lab","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"tFnDUqfqLIU0Is4dxrKuw"}
+:HL["/routstr-chat/_next/static/css/92d01d083d9b8d36.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"lab","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"MUqppSsNa8QIk1-iDaPr0"}
