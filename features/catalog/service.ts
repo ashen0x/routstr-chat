@@ -251,23 +251,25 @@ export class CatalogService {
 
   /** The thinking levels to offer for a model, lightest first: those the
    *  provider the send goes to lists (`at`, the model as it lists it), or, where
-   *  it lists none, those any node lists for the model under any of its ids,
-   *  "none" only while no node says it must think. */
+   *  it lists none, those every node that lists levels for the model under any
+   *  of its ids agrees on, "none" only while no node says it must think. */
   efforts(modelId: string, at?: Model): string[] {
     if (at?.reasoning) {
       const there = ordered(new Set(named(at.reasoning)), !!at.reasoning.mandatory);
       if (there.length) return there;
     }
-    const byModel: Record<string, { levels: Set<string>; must: boolean }> = {};
-    let merged: { levels: Set<string>; must: boolean } | undefined;
+    const byModel: Record<string, { levels?: Set<string>; must: boolean }> = {};
+    let merged: { levels?: Set<string>; must: boolean } | undefined;
     for (const [id, model] of this.listed()) {
-      const seen = (byModel[id] ??= { levels: new Set(), must: false });
+      const seen = (byModel[id] ??= { must: false });
       if (model.id === modelId) merged = seen;
       if (!model.reasoning) continue;
       if (model.reasoning.mandatory) seen.must = true;
-      for (const level of named(model.reasoning)) seen.levels.add(level);
+      const here = named(model.reasoning);
+      const was = seen.levels;
+      if (here.length) seen.levels = new Set(was ? here.filter((level) => was.has(level)) : here);
     }
-    return merged ? ordered(merged.levels, merged.must) : [];
+    return merged?.levels ? ordered(merged.levels, merged.must) : [];
   }
 
   /** Each model a provider you have on lists, with the id it routes under. */

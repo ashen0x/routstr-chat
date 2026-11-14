@@ -501,14 +501,14 @@ describe("CatalogService.efforts", () => {
     expect(catalog.efforts("sol", there)).toEqual(["none", "low", "medium", "high", "xhigh", "max"]);
   });
 
-  it("falls back to what any node lists when the node the send goes to lists none, without Off where one says it must think", () => {
+  it("falls back to what every listing node agrees on when the node the send goes to lists none, without Off where one says it must think", () => {
     const { catalog, cache } = setup();
     const there = { id: "astra" } as never;
     cache[PUBLIC] = [there];
     cache["https://other.example/"] = [levels("astra", ["none", "low", "high"])];
     cache["https://third.example/"] = [levels("astra", ["low", "max"], true)];
 
-    expect(catalog.efforts("astra", there)).toEqual(["low", "high", "max"]);
+    expect(catalog.efforts("astra", there)).toEqual(["low"]);
     expect(catalog.efforts("plain", { id: "plain" } as never)).toEqual([]);
   });
 });

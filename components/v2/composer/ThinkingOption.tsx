@@ -29,7 +29,7 @@ export function ThinkingOption({ model, at }: { model: Model; at?: Model }) {
         label="Thinking"
         prefix="Thinking: "
         value={effort ?? ""}
-        options={["", ...levels].map((level) => ({ value: level, name: NAMES[level] ?? level }))}
+        options={["", ...levels].map((level) => ({ value: level, name: NAMES[level] }))}
         onPick={setThinking}
       />
     </span>
