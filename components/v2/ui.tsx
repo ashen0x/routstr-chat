@@ -134,6 +134,15 @@ export const usePicture = () => {
   return v;
 };
 
+/* How hard a model thinks, as you last chose it; "" leaves it to the node.
+   Its own context, for the same reason as the picture's. */
+const ThinkingContext = createContext<[string, (effort: string) => void] | null>(null);
+export const useThinking = () => {
+  const v = useContext(ThinkingContext);
+  if (!v) throw new Error("useThinking must be used inside UiProvider");
+  return v;
+};
+
 // The composer's model chip: the picker hangs from it and gives the focus back to it. Its own
 // context, so the UI state above stays plain values.
 const ChipContext = createContext<React.RefObject<HTMLButtonElement | null>>({ current: null });
@@ -188,6 +197,7 @@ export function UiProvider({ children }: { children: React.ReactNode }) {
   const [sendWhenFunded, setSendWhenFunded] = useState(false);
   const [isSidebarCollapsed, setCollapsed] = useState(readFold);
   const [picture, setPicture] = useState<PictureChoice>({ n: 1 });
+  const [thinking, setThinking] = useState("");
   const chipRef = useRef<HTMLButtonElement>(null);
   const [draft, setDraft] = useState<DraftState>(() => ({ text: saved.text, attachments: [], rev: 0 }));
   const hold = useRef<string | null>(null);
@@ -259,13 +269,16 @@ export function UiProvider({ children }: { children: React.ReactNode }) {
   const clear = useCallback((rev: number) => setDraft((d) => cleared(d, rev)), []);
   const writing = useMemo(() => ({ ...draft, setText, setAttachments, clear }), [draft, setText, setAttachments, clear]);
   const picturing = useMemo<[PictureChoice, (choice: PictureChoice) => void]>(() => [picture, setPicture], [picture]);
+  const thinks = useMemo<[string, (effort: string) => void]>(() => [thinking, setThinking], [thinking]);
   return (
     <UiContext.Provider value={value}>
       <ChipContext.Provider value={chipRef}>
         <PickContext.Provider value={pick}>
           <DraftContext.Provider value={writing}>
             <PictureContext.Provider value={picturing}>
-              <AgainContext.Provider value={asking}>{children}</AgainContext.Provider>
+              <ThinkingContext.Provider value={thinks}>
+                <AgainContext.Provider value={asking}>{children}</AgainContext.Provider>
+              </ThinkingContext.Provider>
             </PictureContext.Provider>
           </DraftContext.Provider>
         </PickContext.Provider>

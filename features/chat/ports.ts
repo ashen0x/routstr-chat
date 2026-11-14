@@ -101,6 +101,8 @@ export interface ChatModel {
   room?: { context?: number; maxOut?: number | null; draws?: boolean };
   /** A picture model's request: how many, at what size and quality. */
   picture?: PictureChoice;
+  /** How hard the model thinks; absent, the node's own default. */
+  effort?: string;
 }
 
 /** A picture's size and quality, and how many. */

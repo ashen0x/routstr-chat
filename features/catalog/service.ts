@@ -10,6 +10,9 @@ import type { Route, RouteChoice, WalletView } from "./ports";
 
 type Room = { context?: number; maxOut?: number; draws: boolean };
 
+/** The thinking levels a model may be asked for, lightest first. */
+const EFFORTS = ["none", "minimal", "low", "medium", "high", "xhigh", "max"];
+
 export interface CatalogDeps {
   discoveryAdapter: DiscoveryAdapter;
   modelManager: ModelManager;
@@ -240,6 +243,26 @@ export class CatalogService {
       if (maxOut) room.maxOut = Math.min(room.maxOut ?? maxOut, maxOut);
     }
     return rooms;
+  }
+
+  /** The thinking levels any node lists for each model under any of its ids,
+   *  lightest first; "none" only while no node says the model must think. */
+  efforts(): Record<string, string[]> {
+    const byModel: Record<string, { levels: Set<string>; must: boolean }> = {};
+    const ofModel: Record<string, { levels: Set<string>; must: boolean }> = {};
+    for (const [id, model] of this.listed()) {
+      const seen = (ofModel[model.id] = byModel[id] ??= { levels: new Set(), must: false });
+      const reasoning = model.reasoning;
+      if (!reasoning) continue;
+      if (reasoning.mandatory) seen.must = true;
+      for (const level of [...(reasoning.supported_efforts ?? []), ...Object.keys(reasoning.effort_map ?? {})]) seen.levels.add(level);
+    }
+    const efforts: Record<string, string[]> = {};
+    for (const [id, { levels, must }] of Object.entries(ofModel)) {
+      const listed = EFFORTS.filter((level) => levels.has(level) && !(must && level === "none"));
+      if (listed.length) efforts[id] = listed;
+    }
+    return efforts;
   }
 
   /** Each model a provider you have on lists, with the id it routes under. */

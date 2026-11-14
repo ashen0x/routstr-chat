@@ -21,6 +21,7 @@ import { estimateSats, pictureSats, promptTokens, referenceSats } from "../price
 import { mostReferences, paints, pictureOf, sees } from "../picker/catalog";
 import type { PictureChoice } from "@/features/chat/view";
 import { PictureOptions } from "./PictureOptions";
+import { ThinkingOption } from "./ThinkingOption";
 import { useListed } from "../useListed";
 import { settle, takeFlight } from "./landing";
 import { tokenMs } from "../motion";
@@ -660,7 +661,7 @@ export default function Composer({ centred }: { centred: boolean }) {
               </button>
               {routeTip && <span className="tip tip-chip">{routeTip}</span>}
             </span>
-            {drawing && <PictureOptions model={selectedModel} />}
+            {drawing ? <PictureOptions model={selectedModel} /> : selectedModel && <ThinkingOption model={selectedModel} />}
             <span className="voice-wrap tipped" data-price={priceShown && !problem ? "" : undefined}>
               <Voice id={voiceId} settling={estimate.settling && !problem} tone={problem ? "say" : undefined}>
                 {voice}

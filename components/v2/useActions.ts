@@ -6,7 +6,7 @@ import { useHistory } from "@/features/history/view";
 import { editedOf, questionOf, useAccountChat, type AccountChatView, type ChatModel } from "@/features/chat/view";
 import { chatModelOf, useChatModel } from "./useChatModel";
 import { pictureOf } from "./picker/catalog";
-import { useDraft, usePicture, useUi } from "./ui";
+import { useDraft, usePicture, useThinking, useUi } from "./ui";
 
 type Chat = AccountChatView["chat"];
 
@@ -18,6 +18,7 @@ function useStart() {
   const { model, chosen, priced } = useChatModel();
   const { setFace } = useUi();
   const [picture] = usePicture();
+  const [thinking] = useThinking();
   return useCallback(
     async (turn: (chat: Chat, model: ChatModel) => Promise<unknown>): Promise<boolean> => {
       if (!account) {
@@ -31,14 +32,16 @@ function useStart() {
       try {
         // the reply cap fits the smallest room any node lists, wherever the send ends up
         const room = catalog?.rooms()[model.id];
-        await turn(account.chat, { ...chatModelOf(model, chosen, catalog?.routes(model.id) ?? [], priced ?? model), room, picture: pictureOf(model, picture) });
+        // a level is asked for only where some node lists it for this model
+        const effort = catalog?.efforts()[model.id]?.includes(thinking) ? thinking : undefined;
+        await turn(account.chat, { ...chatModelOf(model, chosen, catalog?.routes(model.id) ?? [], priced ?? model), room, picture: pictureOf(model, picture), effort });
         return true;
       } catch (error) {
         toast.error(error instanceof Error ? error.message : String(error));
         return false;
       }
     },
-    [account, model, chosen, priced, catalog, setFace, picture]
+    [account, model, chosen, priced, catalog, setFace, picture, thinking]
   );
 }
 

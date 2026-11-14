@@ -58,6 +58,12 @@ export interface Model {
     input_images_included?: number;
     endpoints?: Readonly<Record<string, { parameters?: { n?: { max?: number }; input_references?: { max?: number } } }>>;
   };
+  /** The thinking levels a node takes for this model; newer nodes list them. */
+  reasoning?: {
+    mandatory?: boolean | null;
+    supported_efforts?: readonly string[] | null;
+    effort_map?: Readonly<Record<string, string>> | null;
+  } | null;
 }
 
 export interface RoutstrNodeInfo {

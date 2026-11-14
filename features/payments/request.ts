@@ -217,6 +217,7 @@ export function createPay(deps: PayDeps): Pay {
           messageHistory: messages,
           modelId: model.id,
           maxTokens: replyCap(model.room, () => promptTokensOf(messages)),
+          reasoningEffort: model.effort,
           // The node is the only provider in node mode. Elsewhere a pinned
           // provider is forced only when the SDK reads our warm cache: cold, it
           // refetches and throws if that provider dropped the model.

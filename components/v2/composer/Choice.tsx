@@ -4,12 +4,12 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { sats } from "../format";
 import { Icon } from "../icons";
 
-export type Option<T> = { value: T; name: string; sats: number };
+export type Option<T> = { value: T; name: string; sats?: number };
 
-/* One of a picture's choices: a quiet button in the composer's row, and its
+/* One of the composer's choices: a quiet button in the composer's row, and its
    menu in the top layer (no clip, no transform under it), under the button
    where it fits, else over it, and inside the window. */
-export function Choice<T extends string | number>({ label, value, options, onPick }: { label: string; value: T; options: Option<T>[]; onPick: (v: T) => void }) {
+export function Choice<T extends string | number>({ label, prefix = "", value, options, onPick }: { label: string; prefix?: string; value: T; options: Option<T>[]; onPick: (v: T) => void }) {
   const id = useId();
   const btn = useRef<HTMLButtonElement>(null);
   const menu = useRef<HTMLDivElement>(null);
@@ -69,7 +69,7 @@ export function Choice<T extends string | number>({ label, value, options, onPic
           menu.current?.showPopover?.();
         }}
       >
-        <span>{shown.name}</span>
+        <span>{prefix}{shown.name}</span>
         <Icon name="down" className="chev" />
       </button>
       <div
@@ -110,7 +110,7 @@ export function Choice<T extends string | number>({ label, value, options, onPic
             }}
           >
             <span>{o.name}</span>
-            <span className="mi-s">~{sats(o.sats)}</span>
+            {o.sats !== undefined && <span className="mi-s">~{sats(o.sats)}</span>}
             <Icon name="check" size={15} className="mi-c" />
           </button>
         ))}
