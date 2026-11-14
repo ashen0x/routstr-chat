@@ -231,21 +231,27 @@ export class CatalogService {
   rooms(): Record<string, Room> {
     const rooms: Record<string, Room> = {};
     const byModel: Record<string, Room> = {};
+    for (const [id, model] of this.listed()) {
+      const room = (rooms[model.id] = byModel[id] ??= { draws: false });
+      if (model.architecture?.output_modalities?.includes("image")) room.draws = true;
+      const context = model.top_provider?.context_length || model.context_length;
+      const maxOut = model.top_provider?.max_completion_tokens;
+      if (context) room.context = Math.min(room.context ?? context, context);
+      if (maxOut) room.maxOut = Math.min(room.maxOut ?? maxOut, maxOut);
+    }
+    return rooms;
+  }
+
+  /** Each model a provider you have on lists, with the id it routes under. */
+  private *listed(): Generator<[string, Model]> {
     const mappings = this.deps.providerManager.getModelIdMappings();
     const off = new Set(this.deps.discoveryAdapter.getDisabledProviders());
     for (const [base, models] of Object.entries(this.deps.discoveryAdapter.getCachedModels())) {
       if (off.has(base)) continue;
       for (const model of models as unknown as Model[]) {
-        const id = canonicalIdForModel(model as unknown as Parameters<typeof canonicalIdForModel>[0], mappings);
-        const room = (rooms[model.id] = byModel[id] ??= { draws: false });
-        if (model.architecture?.output_modalities?.includes("image")) room.draws = true;
-        const context = model.top_provider?.context_length || model.context_length;
-        const maxOut = model.top_provider?.max_completion_tokens;
-        if (context) room.context = Math.min(room.context ?? context, context);
-        if (maxOut) room.maxOut = Math.min(room.maxOut ?? maxOut, maxOut);
+        yield [canonicalIdForModel(model as unknown as Parameters<typeof canonicalIdForModel>[0], mappings), model];
       }
     }
-    return rooms;
   }
 
   /** Providers that serve this model, cheapest first, as routing ranks them. */
