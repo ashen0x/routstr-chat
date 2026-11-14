@@ -486,3 +486,29 @@ describe("CatalogService.goesTo", () => {
     expect(await catalog.goesTo("m", wallet)).toBeUndefined();
   });
 });
+
+describe("CatalogService.efforts", () => {
+  const levels = (id: string, supported_efforts: string[], mandatory = false) =>
+    ({ id, reasoning: { mandatory, supported_efforts } }) as never;
+
+  // 11-14: one node listed "minimal" for GPT-6 Sol, which OpenAI rejects for it
+  it("offers the levels of the node the send goes to", () => {
+    const { catalog, cache } = setup();
+    const there = levels("sol", ["low", "medium", "high", "xhigh", "max", "none"]);
+    cache[PUBLIC] = [there];
+    cache["https://other.example/"] = [levels("sol", ["minimal", "low", "medium", "high"])];
+
+    expect(catalog.efforts("sol", there)).toEqual(["none", "low", "medium", "high", "xhigh", "max"]);
+  });
+
+  it("falls back to what any node lists when the node the send goes to lists none, without Off where one says it must think", () => {
+    const { catalog, cache } = setup();
+    const there = { id: "astra" } as never;
+    cache[PUBLIC] = [there];
+    cache["https://other.example/"] = [levels("astra", ["none", "low", "high"])];
+    cache["https://third.example/"] = [levels("astra", ["low", "max"], true)];
+
+    expect(catalog.efforts("astra", there)).toEqual(["low", "high", "max"]);
+    expect(catalog.efforts("plain", { id: "plain" } as never)).toEqual([]);
+  });
+});

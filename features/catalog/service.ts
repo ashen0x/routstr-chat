@@ -12,6 +12,10 @@ type Room = { context?: number; maxOut?: number; draws: boolean };
 
 /** The thinking levels a model may be asked for, lightest first. */
 const EFFORTS = ["none", "minimal", "low", "medium", "high", "xhigh", "max"];
+/** The levels one listing names, as the API spells them. */
+const named = (reasoning: NonNullable<Model["reasoning"]>) => [...(reasoning.supported_efforts ?? []), ...Object.keys(reasoning.effort_map ?? {})];
+/** Those levels lightest first, without "none" where the model must think. */
+const ordered = (levels: Set<string>, must: boolean) => EFFORTS.filter((level) => levels.has(level) && !(must && level === "none"));
 
 export interface CatalogDeps {
   discoveryAdapter: DiscoveryAdapter;
@@ -245,24 +249,25 @@ export class CatalogService {
     return rooms;
   }
 
-  /** The thinking levels any node lists for each model under any of its ids,
-   *  lightest first; "none" only while no node says the model must think. */
-  efforts(): Record<string, string[]> {
+  /** The thinking levels to offer for a model, lightest first: those the
+   *  provider the send goes to lists (`at`, the model as it lists it), or, where
+   *  it lists none, those any node lists for the model under any of its ids,
+   *  "none" only while no node says it must think. */
+  efforts(modelId: string, at?: Model): string[] {
+    if (at?.reasoning) {
+      const there = ordered(new Set(named(at.reasoning)), !!at.reasoning.mandatory);
+      if (there.length) return there;
+    }
     const byModel: Record<string, { levels: Set<string>; must: boolean }> = {};
-    const ofModel: Record<string, { levels: Set<string>; must: boolean }> = {};
+    let merged: { levels: Set<string>; must: boolean } | undefined;
     for (const [id, model] of this.listed()) {
-      const seen = (ofModel[model.id] = byModel[id] ??= { levels: new Set(), must: false });
-      const reasoning = model.reasoning;
-      if (!reasoning) continue;
-      if (reasoning.mandatory) seen.must = true;
-      for (const level of [...(reasoning.supported_efforts ?? []), ...Object.keys(reasoning.effort_map ?? {})]) seen.levels.add(level);
+      const seen = (byModel[id] ??= { levels: new Set(), must: false });
+      if (model.id === modelId) merged = seen;
+      if (!model.reasoning) continue;
+      if (model.reasoning.mandatory) seen.must = true;
+      for (const level of named(model.reasoning)) seen.levels.add(level);
     }
-    const efforts: Record<string, string[]> = {};
-    for (const [id, { levels, must }] of Object.entries(ofModel)) {
-      const listed = EFFORTS.filter((level) => levels.has(level) && !(must && level === "none"));
-      if (listed.length) efforts[id] = listed;
-    }
-    return efforts;
+    return merged ? ordered(merged.levels, merged.must) : [];
   }
 
   /** Each model a provider you have on lists, with the id it routes under. */

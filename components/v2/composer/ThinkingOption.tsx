@@ -17,12 +17,13 @@ const NAMES: Record<string, string> = {
   max: "Max",
 };
 
-/** How hard the model thinks, where a node lists the levels it takes. */
-export function ThinkingOption({ model }: { model: Model }) {
+/** How hard the model thinks, where a node lists the levels it takes; `at`
+ *  is the model as the provider the send goes to lists it. */
+export function ThinkingOption({ model, at }: { model: Model; at?: Model }) {
   const catalog = useCatalogService();
   const { models } = useCatalogModels();
   const [thinking, setThinking] = useThinking();
-  const levels = useMemo(() => catalog?.efforts()[model.id] ?? [], [catalog, models, model.id]);
+  const levels = useMemo(() => catalog?.efforts(model.id, at) ?? [], [catalog, models, model.id, at]);
   if (!levels.length) return null;
   return (
     <span className="pic-opts">

@@ -32,8 +32,8 @@ function useStart() {
       try {
         // the reply cap fits the smallest room any node lists, wherever the send ends up
         const room = catalog?.rooms()[model.id];
-        // a level is asked for only where some node lists it for this model
-        const effort = catalog?.efforts()[model.id]?.includes(thinking) ? thinking : undefined;
+        // a level is asked for only where the menu offers it
+        const effort = catalog?.efforts(model.id, priced ?? undefined).includes(thinking) ? thinking : undefined;
         await turn(account.chat, { ...chatModelOf(model, chosen, catalog?.routes(model.id) ?? [], priced ?? model), room, picture: pictureOf(model, picture), effort });
         return true;
       } catch (error) {
