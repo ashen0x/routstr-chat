@@ -17,5 +17,5 @@
 :HL["/routstr-chat/_next/static/css/0e1977b50d8e5701.css","style"]
 :HL["/routstr-chat/_next/static/css/237e426166b536bc.css","style"]
 :HL["/routstr-chat/_next/static/css/68d752abbd89709c.css","style"]
-:HL["/routstr-chat/_next/static/css/1bba5e7b52e2eaa9.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"lab","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"lA0ZiNc3Nrmk_ddlY5EzC"}
+:HL["/routstr-chat/_next/static/css/555ab8642cbaa389.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"lab","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"Nhfvm-UyG_xTdktp4Qtsf"}
