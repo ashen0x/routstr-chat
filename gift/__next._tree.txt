@@ -17,5 +17,5 @@
 :HL["/routstr-chat/_next/static/css/0e1977b50d8e5701.css","style"]
 :HL["/routstr-chat/_next/static/css/3ecb66303fc16791.css","style"]
 :HL["/routstr-chat/_next/static/css/68d752abbd89709c.css","style"]
-:HL["/routstr-chat/_next/static/css/8b352382fb4141a6.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"gift","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"FRvv4B6HAV6ks6EnprnZY"}
+:HL["/routstr-chat/_next/static/css/b81cecfa5e4a2840.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"gift","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"5CGjmKRoNUZYhlcT5kZ_W"}
